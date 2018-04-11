@@ -1,14 +1,21 @@
-// DROP DATABASE IF EXISTS bamazonDB;
+var inquirer = require('inquirer');
+var mysql = require("mysql");
 
-// CREATE DATABASE bamazonDB;
+var connection = mysql.createConnection({
+    host: "localhost",
+    port: 8889,
 
-// USE bamazonDB;
+    // Your username
+    user: "root",
 
-// CREATE TABLE products(
-//     item_id INT NOT NULL AUTO_INCREMENT,
-//     product_name VARCHAR(45) NULL,
-//     dept_name VARCHAR(45) NULL,
-//     price DECIMAL(10, 2) NULL,
-//     stock_quantity INT NULL,
-//     PRIMARY KEY(id)
-// );
+    // Your password
+    password: "root",
+    database: "bamazonDB"
+});
+
+connection.connect(function (error) {
+    if (error) throw error;
+    console.log("connected as id " + connection.threadId);
+    connection.end();
+});
+
