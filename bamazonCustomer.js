@@ -81,7 +81,7 @@ function databasePurchase(item_id, unitsNeeded) {
                 start();
             });
         } else {
-            console.log("Sorry we don't have enough " + response[0].product.name + " to fulfill this order.");
+            console.log("Sorry we don't have enough " + response[0].product_name + " to fulfill this order.");
             start();
         }
     })
