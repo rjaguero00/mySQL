@@ -72,8 +72,9 @@ function restockInv() {
 }
 
 function viewLowInv() {
-    connection.query("SELECT * FROM products WHERE stock_quantity < 3", function (err, res) {
+    connection.query("SELECT * FROM products WHERE stock_quantity <= 3", function (err, res) {
         if (err) throw err;
+        console.log("These are the products currently low in inventory")
 
         var table = new Table({
             head: ["item_id", "product_name", "dept_name", "price", "stock_quantity"],
@@ -90,5 +91,38 @@ function viewLowInv() {
 
 
 function addProductToInv() {
-
+    inquirer.prompt([
+        {
+            name: "name",
+            type: "input",
+            message: "Enter the product name"
+        }, {
+            name: "dept",
+            type: "input",
+            message: "What department does this product belong to?"
+        }, {
+            name: "price",
+            type: "input",
+            message: "What is the price of this product?"
+        }, {
+            name: "stock",
+            type: "input",
+            message: "How many units are we add??"
+        }
+    ]).then(function (answers) {
+        connection.query("INSERT INTO products SET ?",
+            {
+                product_name: answers.name,
+                dept_name: answers.dept,
+                price: answers.price,
+                stock_quantity: answers.stock
+            },
+            function (err) {
+                if (err) throw err;
+                console.log("Your product was successfully added!")
+                queryAllProducts();
+                managerView();
+            }
+        )
+    });
 }
