@@ -42,7 +42,7 @@ function managerView() {
                 viewLowInv();
                 break;
             case "Exit":
-                console.log("")
+                console.log("Exiting Program.")
                 connection.end();
                 break;
         }
@@ -72,8 +72,22 @@ function restockInv() {
 }
 
 function viewLowInv() {
+    connection.query("SELECT * FROM products WHERE stock_quantity < 3", function (err, res) {
+        if (err) throw err;
 
+        var table = new Table({
+            head: ["item_id", "product_name", "dept_name", "price", "stock_quantity"],
+            colWidths: [10, 35, 25, 10, 25]
+        });
+        for (var i = 0; i < res.length; i++) {
+
+            table.push([res[i].item_id, res[i].product_name, res[i].dept_name, res[i].price, res[i].stock_quantity]);
+        }
+        console.log(table.toString());
+        managerView();
+    });
 }
+
 
 function addProductToInv() {
 
