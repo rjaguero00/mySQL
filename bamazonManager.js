@@ -68,7 +68,30 @@ function queryAllProducts() {
 }
 
 function restockInv() {
-
+    inquirer.prompt([
+        {
+            name: "id",
+            type: "input",
+            message: "Enter the item_id of product you would like to restock."
+        }, {
+            name: "stock",
+            type: "input",
+            message: "How many units would you like to add?"
+        }
+    ]).then(function (answers) {
+        connection.query("UPDATE products SET ?",
+            {
+                item_id: answers.id,
+                stock_quantity: answers.stock
+            },
+            function (err) {
+                if (err) throw err;
+                // console.log("Your product was successfully added!")
+                queryAllProducts();
+                managerView();
+            }
+        )
+    });
 }
 
 function viewLowInv() {
@@ -121,7 +144,6 @@ function addProductToInv() {
                 if (err) throw err;
                 console.log("Your product was successfully added!")
                 queryAllProducts();
-                managerView();
             }
         )
     });
