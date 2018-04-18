@@ -79,18 +79,44 @@ function restockInv() {
             message: "How many units would you like to add?"
         }
     ]).then(function (answers) {
-        connection.query("UPDATE products SET ?",
-            {
-                item_id: answers.id,
-                stock_quantity: answers.stock
-            },
-            function (err) {
+
+        connection.query("SELECT stock_quantity FROM products WHERE item_id = ?",
+            [
+                answers.id
+            ],
+            function (err, res) {
                 if (err) throw err;
-                // console.log("Your product was successfully added!")
-                queryAllProducts();
-                managerView();
+                console.log(res[0].stock_quantity)
+                connection.query("UPDATE products SET stock_quantity = ? WHERE item_id = ?",
+                    [
+                        parseInt(answers.stock) + res[0].stock_quantity,
+                        answers.id
+                    ],
+                    function (err) {
+                        if (err) throw err;
+                        // console.log("Your product was successfully added!")
+                        queryAllProducts();
+                        // managerView();
+                    }
+                )
             }
-        )
+
+        );
+
+
+
+        // connection.query("UPDATE products SET stock_quantity = ? WHERE item_id = ?",
+        //     [
+        //         answers.stock,
+        //         answers.id
+        //     ],
+        //     function (err) {
+        //         if (err) throw err;
+        //         // console.log("Your product was successfully added!")
+        //         queryAllProducts();
+        //         managerView();
+        //     }
+        // )
     });
 }
 
