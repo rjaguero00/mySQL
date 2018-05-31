@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS bamazonDB;
+DROP DATABASE IF EXISTS bamazonDBB;
 
-CREATE DATABASE bamazonDB;
+CREATE DATABASE bamazonDBB;
 
-USE bamazonDB;
+USE bamazonDBB;
 
 CREATE TABLE departments(
     department_id INT NOT NULL AUTO_INCREMENT,
